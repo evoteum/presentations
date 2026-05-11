@@ -47,6 +47,7 @@ A collection of presentations, defined in code, that we use for talks, lectures,
 
 [//]: # (TOCGEN_TABLE_OF_CONTENTS_START)
 
+- [Background](#background)
 - [Install](#install)
 - [Usage](#usage)
 - [Documentation](#documentation)

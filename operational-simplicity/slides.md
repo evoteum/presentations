@@ -1,9 +1,154 @@
 ---
 marp: true
-theme: default
-paginate: true
-size: A4
+math: mathjax
+theme: rose-pine
+# theme: rose-pine-dawn
+# theme: rose-pine-moon
 ---
+
+<style lang=css>
+/*
+Rosé Pine theme create by RAINBOWFLESH
+> www.rosepinetheme.com
+
+palette in :root
+*/
+
+@import "default";
+@import "schema";
+@import "structure";
+
+:root {
+  --base: #232136;
+    --surface: #2a273f;
+    --overlay: #393552;
+    --muted: #6e6a86;
+    --subtle: #908caa;
+    --text: #e0def4;
+    --love: #eb6f92;
+    --gold: #f6c177;
+    --rose: #ea9a97;
+    --pine: #3e8fb0;
+    --foam: #9ccfd8;
+    --iris: #c4a7e7;
+    --highlight-low: #2a283e;
+    --highlight-muted: #44415a;
+    --highlight-high: #56526e;
+
+  font-family: Pier Sans, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol,
+    "Noto Color Emoji";
+  font-weight: initial;
+
+  background-color: var(--base);
+}
+/*Common style*/
+h1 {
+  color: var(--rose);
+  padding-bottom: 2mm;
+  margin-bottom: 12mm;
+}
+h2 {
+  color: var(--rose);
+}
+h3 {
+  color: var(--rose);
+}
+h4 {
+  color: var(--rose);
+}
+h5 {
+  color: var(--rose);
+}
+h6 {
+  color: var(--rose);
+}
+a {
+  color: var(--iris);
+}
+p {
+  font-size: 20pt;
+  font-weight: 600;
+  color: var(--text);
+}
+code {
+  color: var(--text);
+  background-color: var(--highlight-muted);
+}
+text {
+  color: var(--text);
+}
+ul {
+  color: var(--subtle);
+}
+li {
+  color: var(--subtle);
+}
+img {
+  background-color: var(--highlight-low);
+}
+strong {
+  color: var(--text);
+  font-weight: inherit;
+  font-weight: 800;
+}
+mjx-container {
+  color: var(--text);
+}
+marp-pre {
+  background-color: var(--overlay);
+  border-color: var(--highlight-high);
+}
+
+/*Code blok*/
+.hljs-comment {
+  color: var(--muted);
+}
+.hljs-attr {
+  color: var(--foam);
+}
+.hljs-punctuation {
+  color: var(--subtle);
+}
+.hljs-string {
+  color: var(--gold);
+}
+.hljs-title {
+  color: var(--foam);
+}
+.hljs-keyword {
+  color: var(--pine);
+}
+.hljs-variable {
+  color: var(--text);
+}
+.hljs-literal {
+  color: var(--rose);
+}
+.hljs-type {
+  color: var(--love);
+}
+.hljs-number {
+  color: var(--gold);
+}
+.hljs-built_in {
+  color: var(--love);
+}
+.hljs-params {
+  color: var(--iris);
+}
+.hljs-symbol {
+  color: var(--foam);
+}
+.hljs-meta {
+  color: var(--subtle);
+}
+
+</style>
+
+
+
 
 # Operational Simplicity
 ## Engineering Systems That Scale
@@ -26,6 +171,8 @@ A strong platform improves:
 - operational resilience
 - delivery confidence
 
+---
+
 Infrastructure is not:
 > merely a hosting layer
 
@@ -41,7 +188,7 @@ Not:
 - owning the most systems
 - gatekeeping architecture
 - being the hero engineer
-
+---
 But:
 - reducing friction at scale
 - improving organisational throughput
@@ -62,7 +209,7 @@ As organisations grow:
 - onboarding slows
 - delivery confidence drops
 - cloud entropy accumulates
-
+---
 The result:
 - operational drag
 - hidden complexity
@@ -97,7 +244,7 @@ Every unnecessary:
 - custom deployment path
 - special case
 - exception
-
+---
 creates:
 - operational overhead
 - onboarding cost
@@ -130,7 +277,7 @@ Avoid:
 - solutioneering
 - architectural drift
 - accidental complexity
-
+---
 Instead ask:
 > “What are we trying to achieve?”
 
@@ -152,7 +299,7 @@ Consistency improves:
 - observability
 - operational recovery
 - delivery confidence
-
+---
 Predictable systems are:
 > easier to operate safely at scale
 
@@ -167,7 +314,7 @@ Inherited:
 - environment-specific trunks
 - inconsistent branch naming
 - bespoke Jenkins logic
-
+---
 Migrated to:
 - GitHub Flow
 - standardised workflows
@@ -195,7 +342,7 @@ The goal is:
 - safer deployments
 - improved observability
 - consistent governance
-
+---
 Avoid:
 > cloud-shaped legacy systems
 
@@ -275,7 +422,7 @@ Good developer experience improves:
 - deployment confidence
 - operational consistency
 - engineering morale
-
+---
 Developer friction becomes:
 > organisational inefficiency
 
@@ -289,7 +436,7 @@ I learned early:
 - reduce friction
 - facilitate success
 - remove unnecessary effort
-
+---
 Today that means:
 - enabling self-service
 - simplifying workflows
@@ -369,7 +516,7 @@ Prefer:
 - proven ecosystems
 - operationally mature tooling
 - widely adopted standards
-
+---
 Evaluate:
 - operational burden
 - opportunity cost
@@ -458,7 +605,7 @@ The goal is:
 - deployment visibility
 - reduced MTTR
 - delivery confidence
-
+---
 Experience:
 - LGTM stack
 - Prometheus
@@ -495,7 +642,7 @@ Strong reliability comes from:
 - operational learning
 - automation
 - consistent workflows
-
+---
 Not:
 - heroics
 - tribal knowledge
@@ -544,7 +691,7 @@ I value:
 - collaborative problem solving
 - mentorship
 - operational accountability
-
+---
 I will never ask engineers to do:
 > what I would not do myself
 
@@ -560,7 +707,7 @@ Healthy teams:
 - collaborate effectively
 - improve continuously
 - learn from failure
-
+---
 Psychological safety improves:
 - reliability
 - retention
@@ -593,7 +740,7 @@ Ownership means:
 - reducing ambiguity
 - improving systems
 - helping teams succeed
-
+---
 Not:
 - gatekeeping
 - blame shifting
@@ -610,7 +757,7 @@ Approach:
 - gather feedback
 - experiment safely
 - iterate intelligently
-
+---
 Strong systems evolve through:
 - observation
 - learning
@@ -675,6 +822,12 @@ The strongest engineering systems are:
 - observable
 - understandable
 - operable
-
+---
 Goal:
 > help engineering organisations move quickly, safely, and sustainably
+
+---
+
+# Thanks
+
+For some of my key projects, take a look at my [portfolio](https://jamesgeddes.pro/portfolio).

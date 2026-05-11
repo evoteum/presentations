@@ -37,7 +37,7 @@ Interesting Presentations
 [//]: # (Must not have its own title)
 [//]: # (A detailed description of the repo)
 
-
+A collection of presentations, defined in code, that we use for talks, lectures, tutorials, and other occasions.
 
 ## Table of Contents
 
@@ -64,10 +64,12 @@ Interesting Presentations
 
 
 
-[//]: # (## Background)
+## Background
 [//]: # (OPTIONAL)
 [//]: # (Explain the motivation and abstract dependencies for this repo)
 
+This is where we keep all of our presentations. In keeping with our "Everything as Code" philosophy, we choose to build
+our presentations in code, usually Marp using Markdown, so that they are both portable and freely available.
 
 
 ## Install
@@ -76,11 +78,14 @@ Interesting Presentations
 [//]: # (OPTIONAL IF documentation repo)
 [//]: # (ELSE REQUIRED)
 
-
+To render the markdown into an HTML presentation, you will need to install the
+[marp-cli](https://github.com/marp-team/marp-cli).
 
 ## Usage
 [//]: # (REQUIRED)
 [//]: # (Explain what the thing does. Use screenshots and/or videos.)
+
+Once rendered, open the generated `.html` file in your favourite browser.
 
 
 

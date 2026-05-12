@@ -1,5 +1,7 @@
 name: marp-to-pages
-concurrency: marp-to-pages
+concurrency:
+  group: marp-to-pages
+  cancel-in-progress: false
 
 on:
   push:
@@ -9,18 +11,16 @@ on:
       - opened
       - reopened
       - synchronize
-      - closed
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      pull-requests: write
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Marp CLI
         run: npm install -g @marp-team/marp-cli@4.4.0
@@ -63,6 +63,7 @@ jobs:
           echo "</ul>" >> build/index.html
 
       - name: Update README presentation list
+        if: ${{ github.event_name == 'push' }}
         run: |
           REPO_URL="https://${{ github.repository_owner }}.github.io/$(basename ${{ github.repository }})"
 
@@ -92,6 +93,7 @@ jobs:
           EOF
 
       - name: Commit updated README
+        if: ${{ github.event_name == 'push' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -99,18 +101,23 @@ jobs:
           git diff --staged --quiet || git commit -m "docs: update published presentations list [skip ci]"
           git push
 
-      - name: Deploy preview
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: rossjrw/pr-preview-action@v1
-        with:
-          source-dir: ./build/
-          preview-branch: gh-pages
-          umbrella-dir: pr-preview
-
-      - name: Deploy production
+      - name: Upload Pages artifact
         if: ${{ github.event_name == 'push' }}
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          branch: gh-pages
-          folder: ./build/
-          clean-exclude: pr-preview/
+          path: ./build
+
+  deploy:
+    if: ${{ github.event_name == 'push' }}
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

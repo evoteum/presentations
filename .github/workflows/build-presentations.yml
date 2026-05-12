@@ -1,0 +1,101 @@
+name: marp-to-pages
+concurrency: marp-to-pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Ensure build dir exists
+        run: mkdir -p build
+
+      - name: Build all presentations
+        run: |
+          for dir in */; do
+            dir="${dir%/}"
+            if [[ -f "$dir/slides.md" ]]; then
+              echo "Building $dir"
+              mkdir -p "build/$dir"
+              find "$dir" -not -name "slides.md" -type f | while read f; do
+                dest="build/${f}"
+                mkdir -p "$(dirname "$dest")"
+                cp "$f" "$dest"
+              done
+            fi
+          done
+
+      - name: Marp Build (all presentations)
+        run: |
+          for dir in */; do
+            dir="${dir%/}"
+            if [[ -f "$dir/slides.md" ]]; then
+              docker run --rm -v "$PWD:/work" -w /work -u root:root \
+                marpteam/marp-cli:v3.0.2 \
+                "$dir/slides.md" --allow-local-files -o "build/$dir/index.html"
+            fi
+          done
+
+      - name: Add root index
+        run: |
+          echo "<ul>" > build/index.html
+          for dir in */; do
+            dir="${dir%/}"
+            if [[ -f "$dir/slides.md" ]]; then
+              echo "  <li><a href=\"$dir/\">$dir</a></li>" >> build/index.html
+            fi
+          done
+          echo "</ul>" >> build/index.html
+
+      - name: Update README presentation list
+        run: |
+          REPO_URL="https://${{ github.repository_owner }}.github.io/$(basename ${{ github.repository }})"
+
+          LIST=""
+          for dir in */; do
+            dir="${dir%/}"
+            if [[ -f "$dir/slides.md" ]]; then
+              LIST="${LIST}- [${dir}](${REPO_URL}/${dir})\n"
+            fi
+          done
+
+          perl -i -0pe "s|(\[//\]: # \(PRESENTATIONS_START\)).*?(\[//\]: # \(PRESENTATIONS_STOP\))|\$1\n\n${LIST}\n\$2|s" README.md
+
+      - name: Commit updated README
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --staged --quiet || git commit -m "docs: update presentations list [skip ci]"
+          git push
+
+      - name: Deploy preview
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./build/
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+
+      - name: Deploy production
+        if: ${{ github.event_name == 'push' }}
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: ./build/
+          clean-exclude: pr-preview/

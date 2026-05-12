@@ -109,6 +109,14 @@ Further documentation is in the [`docs`](docs/) directory.
 >
 > Manual configuration changes will be overwritten the next time OpenTofu runs.
 
+## Presentations
+
+[//]: # (This section is managed automatically by the build-presentations workflow)
+[//]: # (PRESENTATIONS_START)
+
+
+
+[//]: # (PRESENTATIONS_START)
 
 [//]: # (## API)
 [//]: # (OPTIONAL)

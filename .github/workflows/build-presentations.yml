@@ -46,7 +46,7 @@ jobs:
             dir="${dir%/}"
             if [[ -f "$dir/slides.md" ]]; then
               docker run --rm -v "$PWD:/work" -w /work -u root:root \
-                marpteam/marp-cli:v3.0.2 \
+                marpteam/marp-cli:v4.4.0 \
                 "$dir/slides.md" --allow-local-files -o "build/$dir/index.html"
             fi
           done

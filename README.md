@@ -117,7 +117,7 @@ Further documentation is in the [`docs`](docs/) directory.
 
 
 
-[//]: # (PRESENTATIONS_START)
+[//]: # (PRESENTATIONS_STOP)
 
 [//]: # (## API)
 [//]: # (OPTIONAL)

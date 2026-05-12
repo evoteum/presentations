@@ -115,7 +115,7 @@ Further documentation is in the [`docs`](docs/) directory.
 [//]: # (This section is managed automatically by the build-presentations workflow)
 [//]: # (PRESENTATIONS_START)
 
-
+- [operational-simplicity](https://evoteum.github.io/presentations/operational-simplicity)
 
 [//]: # (PRESENTATIONS_STOP)
 

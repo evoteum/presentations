@@ -22,15 +22,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install Marp CLI
+        run: npm install -g @marp-team/marp-cli@4.4.0
+
       - name: Ensure build dir exists
         run: mkdir -p build
 
-      - name: Build all presentations
+      - name: Copy presentation assets
         run: |
           for dir in */; do
             dir="${dir%/}"
             if [[ -f "$dir/slides.md" ]]; then
-              echo "Building $dir"
               mkdir -p "build/$dir"
               find "$dir" -not -name "slides.md" -type f | while read f; do
                 dest="build/${f}"
@@ -45,9 +47,7 @@ jobs:
           for dir in */; do
             dir="${dir%/}"
             if [[ -f "$dir/slides.md" ]]; then
-              docker run --rm -v "$PWD:/work" -w /work -u root:root \
-                marpteam/marp-cli:v4.4.0 \
-                "$dir/slides.md" --allow-local-files -o "build/$dir/index.html"
+              marp "$dir/slides.md" --allow-local-files -o "build/$dir/index.html"
             fi
           done
 
@@ -74,14 +74,29 @@ jobs:
             fi
           done
 
-          perl -i -0pe "s|(\[//\]: # \(PRESENTATIONS_START\)).*?(\[//\]: # \(PRESENTATIONS_STOP\))|\$1\n\n${LIST}\n\$2|s" README.md
+          python3 - "$LIST" <<'EOF'
+          import sys, re, pathlib
+
+          readme = pathlib.Path("README.md")
+          content = readme.read_text()
+          new_list = sys.argv[1]
+
+          updated = re.sub(
+            r'(\[//\]: # \(PRESENTATIONS_START\)).*?(\[//\]: # \(PRESENTATIONS_STOP\))',
+            rf'\1\n\n{new_list}\n\2',
+            content,
+            flags=re.DOTALL
+          )
+
+          readme.write_text(updated)
+          EOF
 
       - name: Commit updated README
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          git diff --staged --quiet || git commit -m "docs: update presentations list [skip ci]"
+          git diff --staged --quiet || git commit -m "docs: update published presentations list [skip ci]"
           git push
 
       - name: Deploy preview

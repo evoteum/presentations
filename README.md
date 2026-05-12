@@ -52,6 +52,7 @@ A collection of presentations, defined in code, that we use for talks, lectures,
 - [Usage](#usage)
 - [Documentation](#documentation)
 - [Repository Configuration](#repository-configuration)
+- [Presentations](#presentations)
 - [Contributing](#contributing)
 - [License](#license)
     - [Code](#code)

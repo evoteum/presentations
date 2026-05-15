@@ -2,8 +2,6 @@
 marp: true
 math: mathjax
 theme: rose-pine
-# theme: rose-pine-dawn
-# theme: rose-pine-moon
 ---
 
 <style lang=css>
